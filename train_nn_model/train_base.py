@@ -10,7 +10,7 @@ from models import MLP_base
 
 # 自定义数据集类
 class Base_dataset(Dataset):
-    def __init__(self, train=True, datapath="/home/users/HuZhanyi/dataspace1/CFP2017_rate.json"):
+    def __init__(self, train=True, datapath=""):
         self.train = train
         # 
         df = pd.read_json(datapath)
@@ -68,8 +68,8 @@ class MLP_base(nn.Module):
 # 加载训练数据
 device = 'cuda: 0'
 
-train_dataset = Base_dataset(train=True, datapath='/home/users/HuZhanyi/dataspace1/CINT2017_speed.json')
-val_dataset = Base_dataset(train=False, datapath='/home/users/HuZhanyi/dataspace1/CINT2017_speed.json')
+train_dataset = Base_dataset(train=True, datapath='')
+val_dataset = Base_dataset(train=False, datapath='')
 train_dataloader = DataLoader(train_dataset, batch_size=32, shuffle=True)
 val_dataloader = DataLoader(val_dataset, batch_size=32, shuffle=True)
 print(len(train_dataset))
@@ -115,4 +115,4 @@ for epoch in range(num_epochs):
 
 
 # 保存模型参数
-torch.save(model.state_dict(), '/home/users/HuZhanyi/dataspace1/CINT2017_speed_base_model_%s.pth' % str(num_epochs))
+torch.save(model.state_dict(), './CINT2017_speed_base_model_%s.pth' % str(num_epochs))
