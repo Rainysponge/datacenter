@@ -97,7 +97,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',  # 数据库引擎
         'NAME': 'datacenter',   # 数据库名
         'USER': 'root',   # 账号
-        'PASSWORD': 'zyx@00223',   # 密码——这里要用引号
+        'PASSWORD': '',   # 密码——这里要用引号
         'HOST': '127.0.0.1',   # HOST
         'PORT': 3306,   # 端口
     }
@@ -154,7 +154,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
-ALLOWED_HOSTS = ['219.228.147.147', '127.0.0.1']
+# ALLOWED_HOSTS = ['219.228.147.147', '127.0.0.1']
 
 
 MEDIA_URL = '/media/'
