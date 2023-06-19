@@ -252,7 +252,7 @@ print(f_dict)
 
 # print(sql_list)
 # 打开数据库连接
-db = pymysql.connect(host="localhost", user="root", password="zyx@00223", database="datacenter")
+db = pymysql.connect(host="localhost", user="root", password="", database="datacenter")
 
 # 使用cursor()方法获取操作游标
 cursor = db.cursor()
