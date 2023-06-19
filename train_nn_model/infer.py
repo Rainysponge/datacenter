@@ -6,10 +6,10 @@ import torch.optim as optim
 from torch.utils.data import Dataset, DataLoader
 import json
 
-
+datapath = ""
 
 class Base_dataset(Dataset):
-    def __init__(self, train=True, datapath="/home/users/HuZhanyi/dataspace1/CFP2017_rate.json"):
+    def __init__(self, train=True, datapath=""):
         self.train = train
         df = pd.read_json(datapath)
         condition = df['peak'] > 0
@@ -72,10 +72,10 @@ class MLP_base(nn.Module):
 
 if __name__ == '__main__':
     model = MLP_base()
-    model.load_state_dict(torch.load("/home/users/HuZhanyi/dataspace1/CINT2017_rate_peak_model_300.pth"))
+    model.load_state_dict(torch.load(model_path))
     model.eval()
 
-    val_dataset = Base_dataset(train=False, datapath='/home/users/HuZhanyi/dataspace1/CINT2017_rate.json')
+    val_dataset = Base_dataset(train=False, datapath=datapath)
 
     val_dataloader = DataLoader(val_dataset, batch_size=30, shuffle=True)
 
@@ -85,7 +85,7 @@ if __name__ == '__main__':
     #     output = model(inputs)
     #     print(output)
     #     break
-    df = pd.read_json("/home/users/HuZhanyi/dataspace1/CFP2017_rate.json")
+    df = pd.read_json(datapath)
     X = df[['L1_I', 'L1_D', 'L2', 'L3', 'hz', "Base_Pointers", 'Peak_Pointers', 'Memory', 'cores', 'Nominal', 'peak']]
     a = np.array(X[:1])[0][:10]
     model = model.double()
