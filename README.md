@@ -10,7 +10,7 @@
 当数据被写入数据库后，通过接口/dataspace/data_create
 完成之后通过/dataspace/train_* 来完成SVM和决策树的训练
 神经网络的训练代码后续会传上来，模型结构如下,其实自己训练一下也是很快的
-'''
+```python
 class MLP_base(nn.Module):
     def __init__(self):
         super(MLP_base, self).__init__()
@@ -22,8 +22,6 @@ class MLP_base(nn.Module):
 
         self.fc4 = nn.Linear(256, 1)
         
-        
-
     def forward(self, x):
         x = self.sigmoid(self.fc1(x))
         x = self.sigmoid(self.fc2(x))
@@ -31,6 +29,6 @@ class MLP_base(nn.Module):
         x = self.fc4(x)
 
         return x
-'''
+```
 感谢黑马老师提供的数据大屏划分区域的代码
 ps: 4k和1080p的前端确实有点映射关系，但是不多
