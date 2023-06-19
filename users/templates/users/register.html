@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %}login{% endblock %}
+{% block registerActive %}active{% endblock %}
+
+{% block header_extends %}
+
+{% endblock %}
+
+{% block content %}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 mx-auto shadow p-3 bg-white rounded">
+                <form action="{% url 'register' %}" method="POST">
+                    {% csrf_token %}
+                    {% for field in reg_form %}
+                        <lable for="{{ field.id_for_label }}">{{ field.label }}</lable>
+
+                            {{ field }}
+
+                        <p class="text-danger">{{ field.errors.as_text }}</p>
+                    {% endfor %}
+                    <span class="pull-left text-danger">{{ reg_form.non_field_errors }}</span>
+                    <button id="submit"  type="submit" class="btn btn-outline-primary">登录</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

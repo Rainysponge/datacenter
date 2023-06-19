@@ -1,0 +1,219 @@
+{% extends 'base.html' %}
+
+{% block title %}首页{% endblock %}
+{% block homeActive %} active {% endblock %}
+
+{% block header_extends %}
+    {% load static %}
+
+
+{% endblock %}
+{#1: CFP2017_ratediv,#}
+{#    2: CFP2017_speeddiv,#}
+{#    3: CINT2017_ratediv,#}
+{#    4: CINT2017_speeddiv#}
+{% block content %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-3 mx-auto">
+                <div class="card" style="width: 18rem;">
+
+                  <div class="card-body">
+                      {% if task is not None %}
+                          <li class="list-group-item">
+                              <b>Task:</b> {{ task }}
+                          </li>
+                      {% endif %}
+                    <h5 class="card-title">{{ summary.test_sponsor }}</h5>
+                    <p class="card-text">{{ summary.System_Name }}</p>
+                  </div>
+{#'sw_parallel': True,#}
+{#    #  'hw_ncores': 36, 'hw_nchips': 2, 'hw_nthreadspercore': 1, 'basemean': 116.0, 'peakmean': 117.0, 'base_threads': 36,#}
+{#    #  'baseenergymean': -1.0, 'peakenergymean': -1.0}#}
+                  <ul class="list-group list-group-flush">
+                       {% if summary.base_copies is not None %}
+                          <li class="list-group-item">
+                              <b>Copies:</b> {{ summary.base_copies }}
+                          </li>
+                      {% endif %}
+
+                     {% if summary.hw_ncores is not None %}
+                          <li class="list-group-item">
+                              <b>Cores:</b> {{ summary.hw_ncores }}
+                          </li>
+                      {% endif %}
+                       {% if summary.hw_nchips is not None %}
+                          <li class="list-group-item">
+                              <b>Chips:</b> {{ summary.hw_nchips }}
+                          </li>
+                      {% endif %}
+                        {% if summary.hw_nthreadspercore is not None %}
+                          <li class="list-group-item">
+                              <b>Threads Per Core:</b> {{ summary.hw_nthreadspercore }}
+                          </li>
+                      {% endif %}
+                        {% if summary.basemean is not None and summary.basemean > 0 %}
+                          <li class="list-group-item">
+                              <b>Base Mean:</b> {{ summary.basemean }}
+                          </li>
+                        {% endif %}
+                        {% if summary.peakmean is not None and summary.peakmean > 0 %}
+                          <li class="list-group-item">
+                              <b>Peak Mean:</b> {{ summary.peakmean }}
+                          </li>
+                        {% endif %}
+                        {% if summary.baseenergymean is not None and summary.baseenergymean > 0 %}
+                          <li class="list-group-item">
+                              <b>Base Energy Mean:</b> {{ summary.baseenergymean }}
+                          </li>
+                        {% endif %}
+                        {% if summary.peakenergymean is not None and summary.peakenergymean > 0 %}
+                          <li class="list-group-item">
+                              <b>Peak Energy Mean:</b> {{ summary.peakenergymean }}
+                          </li>
+                        {% endif %}
+
+
+{#                      {% if score_dict.base is not None %}#}
+{#                          <li class="list-group-item">#}
+{#                              <b>Base Score</b> {{ score_dict.base }}#}
+{#                          </li>#}
+{#                      {% endif %}#}
+{#                        {% if score_dict.peak is not None %}#}
+{#                          <li class="list-group-item">#}
+{#                              <b>Peak Score</b> {{ score_dict.peak }}#}
+{#                          </li>#}
+{#                      {% endif %}#}
+
+
+                  </ul>
+                  <div class="card-body">
+                    <a href="{{ summary.HTML }}" class="card-link">HTML</a>
+                    <a href="{{ summary.CSV }}" class="card-link">CSV</a>
+                    <a href="{{ summary.Config }}" class="card-link">Config</a>
+                    <a href="{{ summary.PDF }}" class="card-link">PDF</a>
+                  </div>
+                </div>
+            </div>
+            <div class="col-md-8 mx-auto">
+                <div class="row">
+                    <div class="text-center">
+                        <div>
+                            <h2>Hard & Soft-Ware</h2>
+                        </div>
+                    </div>
+
+
+                    <div class="col">
+
+
+                        <table class="table table-striped">
+                          <thead>
+                            <tr>
+                              <th scope="col"></th>
+                              <th scope="col"></th>
+
+                            </tr>
+                          </thead>
+                          <tbody>
+
+                                {% for key, item in hs_dict_1.items %}
+
+                                    <tr>
+                                        <td>{{ key }}</td>
+                                        <td>{{ item }}</td>
+                                    </tr>
+                                {% endfor %}
+
+
+                        </table>
+                    </div>
+                    <div class="col">
+                        <table class="table table-striped">
+                          <thead>
+                            <tr>
+                              <th scope="col"></th>
+                              <th scope="col"></th>
+
+                            </tr>
+                          </thead>
+                          <tbody>
+
+                                {% for key, item in hs_dict_2.items %}
+
+                                    <tr>
+                                        <td>{{ key }}</td>
+                                        <td>{{ item }}</td>
+                                    </tr>
+                                {% endfor %}
+
+
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-md-3 mx-auto">
+
+            </div>
+            <div class="col-md-8 mx-auto">
+                <table class="table table-bordered table-striped table-hover">
+                    <thead>
+                      <tr>
+                        <th rowspan="2">Benchmark</th>
+                        <th colspan="7"><b style="text-align: center">Base</b></th>
+                          <th colspan="7"><b style="text-align: center">Peak</b></th>
+
+                      </tr>
+                      <tr>
+                        <th>Copies</th>
+                        <th>Seconds</th>
+                        <th>Radtio</th>
+                          <th>Seconds</th>
+                        <th>Radtio</th>
+                          <th>Seconds</th>
+                        <th>Radtio</th>
+                          <th>Copies</th>
+                        <th>Seconds</th>
+                        <th>Radtio</th>
+                          <th>Seconds</th>
+                        <th>Radtio</th>
+                          <th>Seconds</th>
+                        <th>Radtio</th>
+                      </tr>
+                    </thead>
+                    <tbody class="table-group-divider">
+                    {% for key, item in result_dict.items %}
+                        <tr>
+                            <td>{{ key }}</td>
+                            <td>{{ item.base_copies }}</td>
+                            {% for t in  item.base%}
+                                <td>{{  t.0}}</td>
+                                <td>{{  t.1}}</td>
+                            {% endfor %}
+                            <td>{{ item.peak_copies }}</td>
+                            {% for t in  item.peak%}
+                                <td>{{  t.0}}</td>
+                                <td>{{  t.1}}</td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+
+                    </tbody>
+                  </table>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+{% endblock %}

@@ -1,0 +1,256 @@
+{% extends 'base.html' %}
+
+{% block title %}首页{% endblock %}
+{% block homeActive %} active {% endblock %}
+
+{% block header_extends %}
+    {% load static %}
+    <!-- 在<head>标签内引入Select2的样式文件 -->
+
+
+
+
+
+{% endblock %}
+{#1: CFP2017_ratediv,#}
+{#    2: CFP2017_speeddiv,#}
+{#    3: CINT2017_ratediv,#}
+{#    4: CINT2017_speeddiv#}
+{% block content %}
+
+<div class="container">
+        <div class="row">
+
+            <div class="col-md-6 mx-auto shadow p-3 bg-white rounded">
+
+                <div style="text-align: center;">
+                    <button id="SVM" type="button" class="btn btn-outline-primary b1 active">SVM</button>
+                    <button id="DT" type="button" class="btn btn-outline-danger b1">Decision</button>
+                    <button id="MLP" type="button" class="btn btn-outline-danger b1">MLP</button>
+                </div>
+                <div style="text-align: center;">
+                    <button id="CFP2017_ratediv" type="button" class="btn btn-outline-primary b2 active">CFP2017_rate</button>
+                    <button id="CFP2017_speeddiv" type="button" class="btn btn-outline-secondary b2">CFP2017_speed</button>
+                    <button id="CINT2017_ratediv" type="button" class="btn btn-outline-success b2">CINT2017_rate</button>
+                    <button id="CINT2017_speeddiv" type="button" class="btn btn-outline-danger b2">CINT2017_speed</button>
+                </div>
+
+
+
+                <form id="predict" action="{% url 'predict_SVM' 1 1 %}" method="POST">
+                    {% csrf_token %}
+                    {% for field in ml_form %}
+                        <lable for="{{ field.id_for_label }}">{{ field.label }}</lable>
+
+                                {{ field }}
+
+
+
+                        <p class="text-danger">{{ field.errors.as_text }}</p>
+                    {% endfor %}
+
+                    <span class="pull-left text-danger">{{ ml_form.non_field_errors }}</span>
+
+                    <button id="submit"  type="submit" class="btn btn-outline-primary">ok</button>
+
+                </form>
+                <br>
+                {% if  base  is not None %}
+                    <div class="card shadow-sm p-3 mb-5 bg-body-tertiary rounded">
+                      <div class="card-body">
+                        Base Score: {{ base }}, Peak Score: {{ peak }}
+                      </div>
+                    </div>
+                {% endif %}
+            </div>
+
+
+
+        </div>
+</div>
+
+<script>
+    // 获取按钮元素
+    var SVM = document.getElementById("SVM");
+    var DT = document.getElementById("DT");
+    var MLP = document.getElementById("MLP");
+    var CFP2017_ratediv = document.getElementById("CFP2017_ratediv");
+    var CFP2017_speeddiv = document.getElementById("CFP2017_speeddiv");
+    var CINT2017_ratediv = document.getElementById("CINT2017_ratediv");
+    var CINT2017_speeddiv = document.getElementById("CINT2017_speeddiv");
+
+    var myForm = document.getElementById("predict");
+    // 绑定点击事件处理程序
+    var tn_dic = {
+        'CFP2017_ratediv': 1,
+        'CFP2017_speeddiv':2,
+        'CINT2017_ratediv':3,
+        'CINT2017_speeddiv':4
+    };
+    var mn = {
+        SVM:1,
+        DT:2,
+        MLP: 3
+    };
+
+    SVM.addEventListener("click", function() {
+        // 改变目标按钮的链接
+        var activeButton = document.querySelector(".b2.active");
+        var activeButtonId = activeButton ? activeButton.id : null;
+
+        tn = tn_dic[activeButtonId];
+        console.log("/mlPredict/predict_SVM/"+ tn +"/1/");
+
+        // /mlPredict/predict_SVM/4/1/
+        myForm.action = "/mlPredict/predict_SVM/"+ tn +"/1/";
+        var buttons = document.getElementsByClassName("b1");
+
+        // 遍历所有按钮
+        for (var i = 0; i < buttons.length; i++) {
+            // 移除其他按钮的活动状态
+            buttons[i].classList.remove("active");
+        }
+
+        // 添加当前按钮的活动状态
+        SVM.classList.add("active");
+    });
+    MLP.addEventListener("click", function() {
+        // 改变目标按钮的链接
+        var activeButton = document.querySelector(".b2.active");
+        var activeButtonId = activeButton ? activeButton.id : null;
+
+        tn = tn_dic[activeButtonId];
+
+
+        // /mlPredict/predict_SVM/4/1/
+        myForm.action = "/mlPredict/predict_SVM/"+ tn +"/3/";
+        var buttons = document.getElementsByClassName("b1");
+
+        // 遍历所有按钮
+        for (var i = 0; i < buttons.length; i++) {
+            // 移除其他按钮的活动状态
+            buttons[i].classList.remove("active");
+        }
+
+        // 添加当前按钮的活动状态
+        MLP.classList.add("active");
+    });
+
+    DT.addEventListener("click", function() {
+        // 改变目标按钮的链接
+        var activeButton = document.querySelector(".b2.active");
+        var activeButtonId = activeButton ? activeButton.id : null;
+
+        tn = tn_dic[activeButtonId];
+        console.log("/mlPredict/predict_SVM/"+ tn +"/1/");
+
+        // /mlPredict/predict_SVM/4/1/
+        myForm.action = "/mlPredict/predict_SVM/"+ tn +"/2/";
+
+        var buttons = document.getElementsByClassName("b1");
+
+        // 遍历所有按钮
+        for (var i = 0; i < buttons.length; i++) {
+            // 移除其他按钮的活动状态
+            buttons[i].classList.remove("active");
+        }
+
+        // 添加当前按钮的活动状态
+        DT.classList.add("active");
+    });
+    CFP2017_ratediv.addEventListener("click", function() {
+        // 改变目标按钮的链接
+        var activeButton = document.querySelector(".b1.active");
+        var activeButtonId = activeButton ? activeButton.id : null;
+
+        mn_ = mn[activeButtonId];
+        console.log("/mlPredict/predict_SVM/1/"+ mn_ +"/");
+
+        // /mlPredict/predict_SVM/4/1/
+        myForm.action = "/mlPredict/predict_SVM/1/"+ mn_+"/";
+
+
+        var buttons = document.getElementsByClassName("b2");
+
+        // 遍历所有按钮
+        for (var i = 0; i < buttons.length; i++) {
+            // 移除其他按钮的活动状态
+            buttons[i].classList.remove("active");
+        }
+
+        // 添加当前按钮的活动状态
+        CFP2017_ratediv.classList.add("active");
+    });
+    CFP2017_speeddiv.addEventListener("click", function() {
+        // 改变目标按钮的链接
+        var activeButton = document.querySelector(".b1.active");
+        var activeButtonId = activeButton ? activeButton.id : null;
+
+        mn_ = mn[activeButtonId];
+        console.log("/mlPredict/predict_SVM/2/"+ mn_ +"/");
+
+        // /mlPredict/predict_SVM/4/1/
+        myForm.action = "/mlPredict/predict_SVM/2/"+ mn_+"/";
+        var buttons = document.getElementsByClassName("b2");
+
+        // 遍历所有按钮
+        for (var i = 0; i < buttons.length; i++) {
+            // 移除其他按钮的活动状态
+            buttons[i].classList.remove("active");
+        }
+
+        // 添加当前按钮的活动状态
+        CFP2017_speeddiv.classList.add("active");
+    });
+    CINT2017_ratediv.addEventListener("click", function() {
+        // 改变目标按钮的链接
+        var activeButton = document.querySelector(".b1.active");
+        var activeButtonId = activeButton ? activeButton.id : null;
+
+        mn_ = mn[activeButtonId];
+        console.log("/mlPredict/predict_SVM/3/"+ mn_ +"/");
+
+        // /mlPredict/predict_SVM/4/1/
+        myForm.action = "/mlPredict/predict_SVM/3/"+ mn_+"/";
+        var buttons = document.getElementsByClassName("b2");
+
+        // 遍历所有按钮
+        for (var i = 0; i < buttons.length; i++) {
+            // 移除其他按钮的活动状态
+            buttons[i].classList.remove("active");
+        }
+
+        // 添加当前按钮的活动状态
+        CINT2017_ratediv.classList.add("active");
+    });
+
+    CINT2017_speeddiv.addEventListener("click", function() {
+        // 改变目标按钮的链接
+        var activeButton = document.querySelector(".b1.active");
+        var activeButtonId = activeButton ? activeButton.id : null;
+
+        mn_ = mn[activeButtonId];
+        console.log("/mlPredict/predict_SVM/4/"+ mn_ +"/");
+
+        // /mlPredict/predict_SVM/4/1/
+        myForm.action = "/mlPredict/predict_SVM/4/"+ mn_+"/";
+        var buttons = document.getElementsByClassName("b2");
+
+        // 遍历所有按钮
+        for (var i = 0; i < buttons.length; i++) {
+            // 移除其他按钮的活动状态
+            buttons[i].classList.remove("active");
+        }
+
+        // 添加当前按钮的活动状态
+        CINT2017_speeddiv.classList.add("active");
+    });
+
+    if ('{{ base }}' !== ''){
+        alert("base score:" + '{{ base }}' + ', peak score: ' + '{{ peak }}');
+    }
+    console.log("{{ base }}");
+    console.log("{{ peak }}");
+</script>
+
+{% endblock %}
