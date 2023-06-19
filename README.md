@@ -1,4 +1,6 @@
 # datacenter
+ECNU数据中台课程作业
+
 按照正常django的配置方法配置即可
 - pip -r request.txt
 - 配置好相应的数据库端口和密码
@@ -32,4 +34,5 @@ class MLP_base(nn.Module):
         return x
 ```
 感谢黑马老师提供的数据大屏划分区域的代码
+
 ps: 4k和1080p的前端确实有点映射关系，但是不多
